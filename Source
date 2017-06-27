@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+#include <thread>
+using namespace std;
+
+class Matrix{
+public:
+	Matrix (int rows, int cols, vector<int> v) : row(rows), col(cols), mat(v) {};
+	vector<int> mat;
+	int row, col;
+	void print() {
+		for (int i = 0; i < row; ++i){
+			for (int j = 0; j < col; ++j)
+				cout << mat[i*col + j] << " ";
+			cout << endl;
+		}
+	};
+	int operator()(int i, int j) {
+		i--;j--;
+		return mat[i*col + j];
+	}
+};
