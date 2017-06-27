@@ -20,3 +20,50 @@ public:
 		return mat[i*col + j];
 	}
 };
+
+int main() {
+	///////////// init//////////////
+	vector<int> v;
+	cout << "enter row, col, matrix A \n";
+	int row,col;
+	cin >> row >> col;
+	int value;
+	for (int i = 0; i < row; ++i)
+		for (int j = 0; j < col; ++j) {
+			cin >> value;
+			v.push_back(value);
+		}
+	Matrix m1(row, col, v);
+	cout << "enter row, col, matrix B \n";
+	cin >> row >> col;
+	v.clear();
+	for (int i = 0; i < row; ++i)
+		for (int j = 0; j < col; ++j){
+			cin >> value;
+			v.push_back(value);
+		}
+	Matrix m2(row, col, v);
+	/////////// thread //////////////
+
+	auto t1 = [m1,m2]() {
+	};
+	
+	auto t2 = [m1, m2]() {
+	};
+
+	thread alpha(t1);
+	thread beta(t2);
+
+	alpha.join();
+	beta.join();
+
+	
+	cin.get();
+	cin.get();
+	return 0;
+
+
+
+
+
+};
