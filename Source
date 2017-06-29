@@ -3,6 +3,12 @@
 #include <thread>
 using namespace std;
 
+
+
+	
+
+class Dimensions_dead {};
+
 class Matrix{
 public:
 	Matrix (int rows, int cols, vector<int> v) : row(rows), col(cols), mat(v) {};
@@ -15,11 +21,62 @@ public:
 			cout << endl;
 		}
 	};
-	int operator()(int i, int j) {
-		i--;j--;
+	
+	int operator() (int i, int j) const {
 		return mat[i*col + j];
 	}
+
+	
+
+	
 };
+
+void t1(vector<int> & v, const Matrix & m1, const Matrix & m2) {
+	int r = floor(m1.row/2);
+	int a = m1.row;
+	int b = m2.col;
+	int d = m1.col;
+	int s=0;
+		for(int i = 0; i < r; ++i)
+			for(int j = 0; j < b; ++j )
+			{
+				for(int k = 0; k < d; ++k)
+					s+=m1(i,k)*m2(k,j);
+				v.push_back(s);
+				s=0;
+			}
+
+	};
+
+void t2(vector<int> & v, const Matrix & m1, const Matrix & m2 ) {
+	int r = floor(m1.row/2);
+	int a = m1.row;
+	int b = m2.col;		
+	int d = m1.col;	
+	int s=0;
+		for(int i = r; i < a; ++i)
+			for(int j = 0; j < b; ++j )
+			{
+				for(int k = 0; k < d; ++k)
+					s+=m1(i,k)*m2(k,j);
+				v.push_back(s);
+				s=0;
+			}
+	};
+Matrix mult(const Matrix m1, const Matrix m2){
+		if (m1.col != m2.row)
+			throw Dimensions_dead();
+		
+		vector<int> res1;
+		vector<int> res2;
+		thread alpha(t1, ref(res1), ref(m1), ref(m2));
+		thread beta(t2, ref(res2), ref(m1), ref(m2));
+		alpha.join();
+		beta.join();
+		vector<int> res = res1;
+		res.insert(res.end(), res2.begin(), res2.end());
+		Matrix m(m1.row, m2.col, res);
+	}
 
 int main() {
 	///////////// init//////////////
@@ -43,19 +100,9 @@ int main() {
 			v.push_back(value);
 		}
 	Matrix m2(row, col, v);
-	/////////// thread //////////////
-
-	auto t1 = [m1,m2]() {
-	};
+	///////////////////////////////////////
+	Matrix m = mult(m1,m2);
 	
-	auto t2 = [m1, m2]() {
-	};
-
-	thread alpha(t1);
-	thread beta(t2);
-
-	alpha.join();
-	beta.join();
 
 	
 	cin.get();
