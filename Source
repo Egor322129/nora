@@ -76,6 +76,7 @@ Matrix mult(const Matrix m1, const Matrix m2){
 		vector<int> res = res1;
 		res.insert(res.end(), res2.begin(), res2.end());
 		Matrix m(m1.row, m2.col, res);
+		return m;
 	}
 
 int main() {
