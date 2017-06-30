@@ -27,12 +27,12 @@ public:
 		mat = s;
 	};
 	Matrix (Matrix const & M) :row(M.row), col(M.col), mat(M.mat) {};
-	Matrix & operator=(Matrix const & M) {
+	/*Matrix & operator=(Matrix const & M) {
 		row = M.row;
 		col = M.col;
 		mat = M.mat;
 		return *this;
-	}
+	}*/
 	Matrix (int rows, int cols, vector<int> v) : row(rows), col(cols), mat(v) {};
 	vector<int> mat;
 	int row, col;
