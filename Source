@@ -11,6 +11,11 @@ class Dimensions_dead {};
 
 class Matrix{
 public:
+	Matrix () : row(0), col(0) {
+		vector<int>s;
+		mat = s;
+	};
+	Matrix (Matrix const & M) :row(M.row), col(M.col), mat(M.mat) {};
 	Matrix (int rows, int cols, vector<int> v) : row(rows), col(cols), mat(v) {};
 	vector<int> mat;
 	int row, col;
