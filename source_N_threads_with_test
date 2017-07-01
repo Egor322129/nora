@@ -3,6 +3,7 @@
 #include <thread>
 #include <mutex>
 #include <time.h>
+#include <chrono>
 using namespace std;
 
 mutex m;
@@ -59,11 +60,10 @@ void thr(vector<int> & v, const Matrix & m1, const Matrix & m2, int start, int f
 			}
 };
 
-Matrix multy_mult(const Matrix m1, const Matrix m2){
+Matrix multy_mult(const Matrix m1, const Matrix m2, int N){
 		if (m1.col != m2.row)
 			throw Dimensions_dead();
 		
-		int N = 5;
 		int slice = m1.row/N;
 		vector<thread> thread_pool;
 		vector<vector<int>> res(N);
@@ -92,7 +92,7 @@ Matrix multy_mult(const Matrix m1, const Matrix m2){
 
 
 int main() {
-	
+	////////////// init /////////////////
 	vector<int> v;
 	cout << "enter row, col, matrix A \n";
 	int row,col;
@@ -113,10 +113,21 @@ int main() {
 			v.push_back(value);
 		}
 	Matrix b(row, col, v);
-	//////////////////////////////////////
-	Matrix C = multy_mult(a,b);
-	C.print();
+	/////////////////////////////////////////
+
+	////////////// test //////////////
+	for (int i = 1; i < 5; ++i){
+		cout << "-------test_with_" << i << "_threads-----------";
+		auto t1 = chrono::system_clock::now();
+		Matrix C = multy_mult(a,b, i);
+		auto t2 = chrono::system_clock::now();
+		auto diff = t2 - t1;
+		cout << "\nused time: " << float(diff.count())/10000000 << " sec\n";
+		
+	}
+	////////////////////////////////////////////
+
 	cin.get();
 	cin.get();
 	return 0;
-};
+	};
